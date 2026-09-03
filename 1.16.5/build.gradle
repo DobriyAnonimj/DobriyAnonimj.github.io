@@ -1,0 +1,84 @@
+plugins {
+	// Loom — это только инструмент сборки; его требования к версии Gradle
+	// никак не связаны с тем, какую версию Minecraft собирает мод (1.20.1,
+	// см. gradle.properties) — Loom версионно-независим и умеет собирать под
+	// любые версии игры.
+	//
+	// 1.16.3 выбрана потому, что она требует Gradle >= 9.4, а IntelliJ по
+	// умолчанию сейчас генерирует обёртку с Gradle 9.6.
+	// Если у вас Gradle 8.x — используйте вместо неё '1.11.8'
+	// (последняя ветка Loom с поддержкой Gradle 8.14).
+	// Список версий: https://maven.fabricmc.net/fabric-loom/fabric-loom.gradle.plugin/
+	id 'fabric-loom' version '1.16.3'
+	id 'maven-publish'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+	archivesName = project.archives_base_name
+}
+
+repositories {
+	maven {
+		name = "TerraformersMC (Mod Menu)"
+		url = "https://maven.terraformersmc.com/releases/"
+	}
+}
+
+dependencies {
+	// Minecraft / mappings / loader.
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+	// Fabric API.
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+	// Внешней библиотеки анимаций больше нет: движок собственный
+	// (пакет client/anim + два миксина). Так мод собирается под любую версию
+	// игры, включая те восемь, под которые библиотек не существует вовсе —
+	// см. docs/VERSION_COVERAGE.md.
+
+	// Mod Menu — НЕобязательная зависимость. modImplementation означает, что
+	// он доступен при компиляции и в дев-запуске, но НЕ вшивается в готовый
+	// jar: без Mod Menu мод прекрасно работает, просто кнопки настроек в его
+	// списке не будет (класс PackAnimationModMenu тогда просто не грузится).
+	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+}
+
+processResources {
+	inputs.property "version", project.version
+	filesMatching("fabric.mod.json") {
+		expand "version": project.version
+	}
+}
+
+java {
+	withSourcesJar()
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.encoding = "UTF-8"
+	// Minecraft 1.20.1 работает на Java 17. release=17 гарантирует нужный
+	// байткод независимо от того, на какой JDK крутится сам Gradle.
+	it.options.release = 8
+}
+
+jar {
+	from("LICENSE") {
+		rename { "${it}_${project.base.archivesName.get()}" }
+	}
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+		}
+	}
+	repositories {
+		// Сюда можно добавить свой репозиторий, если захотите публиковать мод.
+	}
+}

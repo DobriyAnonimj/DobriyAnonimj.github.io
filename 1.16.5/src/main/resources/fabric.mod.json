@@ -1,0 +1,42 @@
+{
+	"schemaVersion": 1,
+	"id": "packanimation",
+	"version": "${version}",
+	"name": "Pack Animation",
+	"description": "Меняет анимации стояния, ходьбы и бега игрока с помощью паков анимаций (Ниндзя, Зомби, Робот и собственные паки игрока). Другие игроки с этим модом видят, какой пак анимаций выбрал каждый из вас.",
+	"authors": [
+		"Dobriy_Anonimj"
+	],
+	"contact": {
+		"homepage": "https://github.com/Dobriy-Anonimj/pack-animation"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/packanimation/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"ru.dobriyanonimj.packanimation.PackAnimationMod"
+		],
+		"client": [
+			"ru.dobriyanonimj.packanimation.client.PackAnimationClient"
+		],
+		"modmenu": [
+			"ru.dobriyanonimj.packanimation.client.PackAnimationModMenu"
+		]
+	},
+	"suggests": {
+		"modmenu": "*"
+	},
+	"depends": {
+		"fabricloader": ">=0.15.0",
+		"minecraft": ">=1.16.2 <1.17",
+		"java": ">=8",
+		"fabric": ">=0.42.0"
+	},
+	"custom": {
+		"packanimation:author": "Dobriy_Anonimj"
+	},
+	"mixins": [
+		"packanimation.client.mixins.json"
+	]
+}

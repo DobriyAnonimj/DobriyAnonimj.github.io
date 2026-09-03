@@ -1,0 +1,31 @@
+plugins {
+	id 'java'
+}
+
+group = 'ru.dobriyanonimj'
+version = '1.0.0'
+
+repositories {
+	mavenCentral()
+	// Репозиторий PaperMC. Компилируемся против paper-api, но в коде
+	// используются ТОЛЬКО классы org.bukkit.* — поэтому готовый jar одинаково
+	// работает на Bukkit, Spigot, Paper и Purpur.
+	maven {
+		name = 'papermc'
+		url = 'https://repo.papermc.io/repository/maven-public/'
+	}
+}
+
+dependencies {
+	compileOnly 'io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT'
+}
+
+tasks.withType(JavaCompile).configureEach {
+	options.encoding = 'UTF-8'
+	// Minecraft 1.20.1 (и Paper/Purpur под неё) работает на Java 17.
+	options.release = 17
+}
+
+tasks.named('jar') {
+	archiveBaseName = 'PackAnimation-Bukkit'
+}

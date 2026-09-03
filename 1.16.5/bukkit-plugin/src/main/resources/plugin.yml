@@ -1,0 +1,7 @@
+name: PackAnimation
+version: 1.0.0
+main: ru.dobriyanonimj.packanimation.bukkit.PackAnimationPlugin
+api-version: '1.16'
+author: Dobriy_Anonimj
+description: Server-side relay for the Pack Animation client mod. Lets players see each other's animation packs on Bukkit/Spigot/Paper/Purpur servers.
+website: https://github.com/Dobriy-Anonimj/pack-animation

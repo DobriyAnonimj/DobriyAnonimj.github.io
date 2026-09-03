@@ -1,0 +1,14 @@
+{
+	"required": true,
+	"minVersion": "0.8",
+	"package": "ru.dobriyanonimj.packanimation.mixin.client",
+	"compatibilityLevel": "JAVA_8",
+	"mixins": [],
+	"client": [
+		"PlayerEntityModelMixin",
+		"PlayerEntityRendererMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
